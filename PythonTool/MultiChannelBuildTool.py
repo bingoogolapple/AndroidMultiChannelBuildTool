@@ -7,7 +7,7 @@ import os
 # 空文件 便于写入此空文件到apk包中作为channel文件
 src_empty_file = 'info/czt.txt'
 # 创建一个空文件（不存在则创建）
-f = open(src_empty_file, 'w') 
+f = open(src_empty_file, 'w')
 f.close()
 
 # 获取当前目录中所有的apk源包
@@ -34,19 +34,21 @@ for src_apk in src_apks:
     src_apk_name = temp_list[0]
     # 后缀名，包含.   例如: ".apk "
     src_apk_extension = temp_list[1]
-    
+
+    prefix_list = src_apk_name.split('_')
+
     # 创建生成目录,与文件名相关
     output_dir = 'output_' + src_apk_name + '/'
     # 目录不存在则创建
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
-        
+
     # 遍历渠道号并创建对应渠道号的apk文件
     for line in lines:
         # 获取当前渠道号，因为从渠道文件中获得带有\n,所有strip一下
         target_channel = line.strip()
         # 拼接对应渠道号的apk
-        target_apk = output_dir + src_apk_name + "-" + target_channel + src_apk_extension  
+        target_apk = output_dir + prefix_list[0] + "_" + target_channel + '_' + prefix_list[1] + src_apk_extension
         # 拷贝建立新apk
         shutil.copy(src_apk,  target_apk)
         # zip获取新建立的apk文件
